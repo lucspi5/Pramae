@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Comando com Vibração e Vídeo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #121212; /* Fundo escuro fica melhor para vídeo */
+            font-family: sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        #btn-comecar {
+            padding: 20px 50px;
+            font-size: 24px;
+            background-color: #e31c25;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(227, 28, 37, 0.5);
+            transition: 0.3s;
+        }
+
+        /* Animação visual de tremor */
+        @keyframes tremor {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        .tremendo {
+            animation: tremor 0.1s linear infinite;
+        }
+
+        #video-container {
+            display: none;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-comecar" onclick="iniciarAcao()">COMEÇAR</button>
+
+    <div id="video-container">
+        <video id="meuVideo" controls>
+            <source src="nome-do-seu-video.mp4" type="video/mp4">
+            Seu navegador não suporta vídeos.
+        </video>
+    </div>
+
+    <script>
+        function iniciarAcao() {
+            const btn = document.getElementById('btn-comecar');
+            const videoDiv = document.getElementById('video-container');
+            const videoPlayer = document.getElementById('meuVideo');
+
+            // 1. Faz o celular vibrar (padrão intenso)
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100, 50, 100, 50, 500, 100, 500]);
+            }
+
+            // 2. Efeito visual no botão
+            btn.classList.add('tremendo');
+            btn.innerText = "CARREGANDO...";
+
+            // 3. Aguarda 2 segundos e troca o botão pelo vídeo
+            setTimeout(() => {
+                btn.style.display = 'none';
+                videoDiv.style.display = 'block';
+                
+                // Tenta dar play automático no vídeo
+                videoPlayer.play().catch(error => {
+                    console.log("O autoplay pode estar bloqueado pelo navegador.");
+                });
+
+                // Para a vibração ao abrir o vídeo
+                if (navigator.vibrate) navigator.vibrate(0);
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
