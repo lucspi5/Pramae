@@ -1,19 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Comando com Vibração e Vídeo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Você</title>
     <style>
         body {
             display: flex;
@@ -21,8 +11,9 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #121212; /* Fundo escuro fica melhor para vídeo */
-            font-family: sans-serif;
+            margin: 0;
+            background-color: #000; /* Fundo preto para destacar o vídeo */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
             overflow: hidden;
         }
@@ -30,17 +21,22 @@
         #btn-comecar {
             padding: 20px 50px;
             font-size: 24px;
-            background-color: #e31c25;
+            background-color: #e31c25; /* Vermelho vibrante */
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(227, 28, 37, 0.5);
-            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(227, 28, 37, 0.6);
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 10;
         }
 
-        /* Animação visual de tremor */
+        #btn-comecar:active {
+            transform: scale(0.95);
+        }
+
+        /* Animação de tremor visual */
         @keyframes tremor {
             0% { transform: translate(0); }
             20% { transform: translate(-3px, 3px); }
@@ -56,24 +52,25 @@
 
         #video-container {
             display: none;
-            width: 90%;
-            max-width: 800px;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
         }
 
         video {
             width: 100%;
             border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <button id="btn-comecar" onclick="iniciarAcao()">COMEÇAR</button>
+    <button id="btn-comecar" onclick="iniciarAcao()">CLIQUE PARA COMEÇAR</button>
 
     <div id="video-container">
-        <video id="meuVideo" controls>
-            <source src="nome-do-seu-video.mp4" type="video/mp4">
+        <video id="meuVideo" playsinline preload="auto">
+            <source src="video.mp4" type="video/mp4">
             Seu navegador não suporta vídeos.
         </video>
     </div>
@@ -84,34 +81,32 @@
             const videoDiv = document.getElementById('video-container');
             const videoPlayer = document.getElementById('meuVideo');
 
-            // 1. Faz o celular vibrar (padrão intenso)
+            // 1. Ativa a vibração real do celular (Android)
             if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100, 50, 100, 50, 500, 100, 500]);
+                // Padrão: vibra, pausa, vibra forte
+                navigator.vibrate([200, 100, 200, 100, 800]);
             }
 
-            // 2. Efeito visual no botão
+            // 2. Ativa o efeito visual no botão
             btn.classList.add('tremendo');
             btn.innerText = "CARREGANDO...";
 
-            // 3. Aguarda 2 segundos e troca o botão pelo vídeo
+            // 3. Pequeno delay para o efeito de "processamento"
             setTimeout(() => {
                 btn.style.display = 'none';
                 videoDiv.style.display = 'block';
                 
-                // Tenta dar play automático no vídeo
-                videoPlayer.play().catch(error => {
-                    console.log("O autoplay pode estar bloqueado pelo navegador.");
+                // Configura e dá play no vídeo
+                videoPlayer.controls = true; // Mostra os controles agora
+                videoPlayer.play().catch(e => {
+                    console.log("Play automático bloqueado, o usuário verá os controles.");
                 });
 
-                // Para a vibração ao abrir o vídeo
+                // Para a vibração quando o vídeo abrir
                 if (navigator.vibrate) navigator.vibrate(0);
-            }, 2000);
+            }, 1500);
         }
     </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>
