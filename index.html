@@ -3,110 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Você</title>
+    <title>Feliz Dia das Mães ❤️</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        body, html {
             margin: 0;
-            background-color: #000; /* Fundo preto para destacar o vídeo */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: black;
         }
 
-        #btn-comecar {
-            padding: 20px 50px;
-            font-size: 24px;
-            background-color: #e31c25; /* Vermelho vibrante */
-            color: white;
+        /* Vídeo de fundo */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .photo-container img {
+            max-width: 80%;
+            max-height: 300px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin: 20px 0;
+        }
+
+        .container {
+            z-index: 1;
+            padding: 20px;
+        }
+
+        /* Botão Rosa com Letras Vermelhas */
+        .btn-presente {
+            background-color: #ffc0cb; /* Rosa */
+            color: #ff0000; /* Vermelho */
             border: none;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(227, 28, 37, 0.6);
-            transition: transform 0.2s, background-color 0.2s;
-            z-index: 10;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        #btn-comecar:active {
-            transform: scale(0.95);
+        .btn-presente:hover {
+            transform: scale(1.1);
         }
 
-        /* Animação de tremor visual */
-        @keyframes tremor {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-            100% { transform: translate(0); }
-        }
-
-        .tremendo {
-            animation: tremor 0.1s linear infinite;
-        }
-
-        #video-container {
+        .hidden {
             display: none;
-            width: 100%;
-            max-width: 500px;
-            padding: 10px;
         }
 
-        video {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        h2 {
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: #ff4b5c;
+            font-size: 25px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 10;
+            animation: floatUp 3s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <button id="btn-comecar" onclick="iniciarAcao()">CLIQUE PARA COMEÇAR</button>
+    <!-- Vídeo de Fundo usando o nome do seu arquivo no GitHub -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
-    <div id="video-container">
-        <video id="meuVideo" playsinline preload="auto">
-            <source src="video.mp4" type="video/mp4">
-            Seu navegador não suporta vídeos.
-        </video>
+    <!-- Tela Inicial -->
+    <div id="step1" class="container">
+        <button class="btn-presente" onclick="showGift()">Receber Presente</button>
+    </div>
+
+    <!-- Tela com a Foto e Mensagem -->
+    <div id="step2" class="container hidden">
+        <h2>TEXTO DE CIMA AQUI</h2>
+        
+        <div class="photo-container">
+            <!-- Usando o nome da sua foto no GitHub -->
+            <img src="foto.jpg" alt="Foto especial">
+        </div>
+
+        <h2>eu te amo mto, feliz dia das mães</h2>
+        
+        <button class="btn-presente" onclick="rainHearts()">eu também te amo muito ❤️</button>
+        
+        <h2>TEXTO DE BAIXO AQUI</h2>
     </div>
 
     <script>
-        function iniciarAcao() {
-            const btn = document.getElementById('btn-comecar');
-            const videoDiv = document.getElementById('video-container');
-            const videoPlayer = document.getElementById('meuVideo');
+        function showGift() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            // Tenta dar play no vídeo caso o navegador bloqueie o autoplay
+            document.getElementById('bg-video').play();
+        }
 
-            // 1. Ativa a vibração real do celular (Android)
-            if (navigator.vibrate) {
-                // Padrão: vibra, pausa, vibra forte
-                navigator.vibrate([200, 100, 200, 100, 800]);
+        function rainHearts() {
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-particle');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
             }
-
-            // 2. Ativa o efeito visual no botão
-            btn.classList.add('tremendo');
-            btn.innerText = "CARREGANDO...";
-
-            // 3. Pequeno delay para o efeito de "processamento"
-            setTimeout(() => {
-                btn.style.display = 'none';
-                videoDiv.style.display = 'block';
-                
-                // Configura e dá play no vídeo
-                videoPlayer.controls = true; // Mostra os controles agora
-                videoPlayer.play().catch(e => {
-                    console.log("Play automático bloqueado, o usuário verá os controles.");
-                });
-
-                // Para a vibração quando o vídeo abrir
-                if (navigator.vibrate) navigator.vibrate(0);
-            }, 1500);
         }
     </script>
-
 </body>
 </html>
